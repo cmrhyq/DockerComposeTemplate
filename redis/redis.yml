@@ -4,7 +4,7 @@ version: '3.9'
 services:
   redis-01:
     container_name: redis-01
-    image: redis
+    image: redis:7.0.11
     restart: always
     privileged: true
     command: redis-server /etc/redis/redis.conf --appendonly yes

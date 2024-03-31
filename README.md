@@ -22,5 +22,5 @@ docker network create --subnet=172.100.0.0/16 --gateway=172.100.0.1 --ip-range=1
 | Nginx     | latest | *Nginx是*一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。 |
 | Tomcat    | 8.5.42 | *Tomcat*服务器是一个免费的开放源代码的Web应用服务器，属于轻量级应用服务器，在中小型系统和并发访问用户不是很多的场合下被普遍使用。 |
 | Portainer | latest | Portainer 是一个可视化的Docker 操作界面，提供状态显示面板、应用模板快速部署、容器镜像网络数据卷的基本操作...等功能。 |
-| Redis     | latest | Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。 |
+| Redis     | 7.0.11 | Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。 |
 
