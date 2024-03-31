@@ -1,0 +1,34 @@
+# docker-compose -f ./portainer.yml --compatibility up -d
+
+version: '3.9'
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    restart: always
+    privileged: true
+    network_mode: "bridge"
+    ports:
+      - 9000:9000
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /var/run/docker.sock:/var/run/docker.sock
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - portainer
+        ipv4_address: 172.100.0.42
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16

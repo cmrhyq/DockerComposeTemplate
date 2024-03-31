@@ -1,0 +1,37 @@
+# docker-compose -f ./nginx.yml up -d
+# docker run -itd --name=nginx nginx:latest
+
+version: '3.6'
+services:
+  nginx-01:
+    container_name: nginx-01
+    image: nginx
+    restart: always
+    privileged: true
+    environment:
+      TZ: 'Asia/Shanghai'
+    network_mode: "host"
+    volumes:
+      - /opt/docker/data/nginx/conf:/etc/nginx
+      - /opt/docker/data/nginx/web:/usr/share/nginx
+      - /opt/docker/data/nginx/logs:/var/log/nginx
+      - /etc/localtime:/etc/localtime
+    # 网络相关
+    # build: .
+    # networks:
+    #   container-network:
+    #     aliases:
+    #       - nginx-01
+    #     ipv4_address: 172.100.0.38
+
+# networks:
+#   container-network:
+    # container-network如果已存在则使用 external: ture
+    # external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16

@@ -1,0 +1,40 @@
+# docker-compose -f ./tomcat-env-01.yml --compatibility up -d
+# docker run -itd --name=tomcat -p 8080:8080 tomcat:8.5.42
+
+version: '3.9'
+services:
+  tomcat_env_01:
+    container_name: tomcat_env_01
+    image: tomcat:8.5.42
+    restart: always
+    privileged: true
+    ports:
+      - 1002:8080
+    volumes:
+      - /etc/localtime:/etc/localtime
+
+      - /opt/docker/data/tomcat/bin:/usr/local/tomcat/bin
+      - /opt/docker/data/tomcat/conf:/usr/local/tomcat/conf
+      - /opt/docker/data/tomcat/lib:/usr/local/tomcat/lib
+      - /opt/docker/data/tomcat/logs:/usr/local/tomcat/logs
+      - /opt/docker/data/tomcat/webapps:/usr/local/tomcat/webapps
+      - /opt/docker/data/tomcat/work:/usr/local/tomcat/work
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - tomcat_env_01
+        ipv4_address: 172.100.0.42
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16
