@@ -1,0 +1,38 @@
+# docker-compose -f ./redis.yml up -d
+
+version: '3.9'
+services:
+  redis-01:
+    container_name: redis-01
+    image: redis
+    restart: always
+    privileged: true
+    command: redis-server /etc/redis/redis.conf --appendonly yes
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    ports:
+      - 6379:6379
+    volumes:
+      - /opt/docker/data/redis/data:/data
+      - /opt/docker/data/redis/conf/redis.conf:/etc/redis/redis.conf
+      - /opt/docker/data/redis/log:/var/log
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - redis-01
+        ipv4_address: 172.100.0.22
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16
