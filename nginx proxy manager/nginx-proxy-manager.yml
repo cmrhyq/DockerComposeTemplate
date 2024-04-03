@@ -1,0 +1,38 @@
+# docker-compose -f ./nginx-proxy-manager.yml up -d
+# docker run -itd --name=nginx-proxy-manager nginx-proxy-manager:latest
+
+version: '3.9'
+services:
+  nginx-proxy-manager-01:
+    container_name: nginx-proxy-manager-01
+    image: docker.io/jc21/nginx-proxy-manager:latest
+    restart: always
+    privileged: true
+    # network_mode: "host"
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+    volumes:
+      - /opt/docker/data/nginx-proxy-manager/data:/data
+      - /opt/docker/data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - nginx-proxy-manager-01
+        ipv4_address: 172.100.0.38
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16
