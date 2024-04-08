@@ -1,0 +1,45 @@
+# docker-compose -f ./xxl-job-admin.yml --compatibility up -d
+# 运行前请先保证已经使用Dockerfile将镜像构建成功
+
+version: '3.9'
+services:
+  xxl-job-admin-01:
+    image: xxl-job-admin:v1.0.1
+    container_name: xxl-job-admin-01
+    ports:
+      - 8180:8180
+    volumes:
+      - /opt/docker/data/xxl-job/application/admin/app.jar:/app.jar
+      - /opt/docker/data/xxl-job/logs/admin:/data/applogs/xxl-job
+      - /opt/docker/data/xxl-job/conf/admin:/config
+    # 使用xuxueli开源版本的xxljob时需要配置以下内容
+    # environment:
+    #     PARAMS: "--spring.datasource.url=jdbc:mysql://1.2.3.5.8:3306/xxl_job?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    #              --spring.datasource.username=321
+    #              --spring.datasource.password=123
+    #              --spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver"
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - xxl-job-admin-01
+        ipv4_address: 172.100.0.43
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16

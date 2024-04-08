@@ -1,0 +1,39 @@
+# docker-compose -f ./xxl-job-executor.yml --compatibility up -d
+# 运行前请先保证已经使用Dockerfile将镜像构建成功
+
+version: '3.9'
+services:
+  xxl-job-executor-01:
+    image: xxl-job-executor:v1.0.1
+    container_name: xxl-job-executor-01
+    ports: 
+      - 8181:8181
+    volumes:
+      - /opt/docker/data/xxl-job/application/executor/app.jar:/app.jar
+      - /opt/docker/data/xxl-job/logs/executor:/data/applogs/xxl-job
+      - /opt/docker/data/xxl-job/conf/executor/:/config
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - xxl-job-executor-01
+        ipv4_address: 172.100.1.4
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16

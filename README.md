@@ -24,4 +24,6 @@ docker network create --subnet=172.100.0.0/16 --gateway=172.100.0.1 --ip-range=1
 | Portainer           | latest | Portainer 是一个可视化的Docker 操作界面，提供状态显示面板、应用模板快速部署、容器镜像网络数据卷的基本操作...等功能。 |
 | Redis               | 7.0.11 | Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。 |
 | nginx proxy manager | latest | 一个基于Docker 的工具，提供简单而强大的界面来管理Nginx 代理主机。 |
+| xxl-job-admin       | latest | XXL-JOB是一个分布式任务调度平台，admin是它的管理端           |
+| xxl-job-executor    | latest | XXL-JOB是一个分布式任务调度平台，executor是它的执行端        |
 
