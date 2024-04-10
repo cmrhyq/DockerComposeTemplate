@@ -1,4 +1,5 @@
 # docker-compose -f ./redis.yml up -d
+# docker run -itd --name=redis -p 8080:8080 redis:7.0.11
 
 version: '3.9'
 services:

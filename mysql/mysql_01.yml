@@ -1,0 +1,64 @@
+# docker-compose -f ./mysql_01.yml up -d
+# docker run -itd --name=mysql mysql:8.0.33
+
+version: '3.9'
+services:
+  mysql_01:
+    # 为自定义的容器指定一个名称，而不是使用默认的名称 
+    container_name: mysql_01
+    # 从指定的镜像中启动容器，可以是存储仓库、标签以及镜像 ID
+    image: mysql:8.0.33
+    # 值为 on-failure 时，当出现 on-failure 报错容器退出时，容器重新启动
+    restart: on-failure
+    privileged: true
+    # 从文件中添加环境变量。可以是单个值或是列表 
+    # 如果已经用 docker-compose -f FILE 指定了 Compose 文件
+    # 那么 env_file 路径值为相对于该文件所在的目录
+    # env_file:
+    #  - ./mysql.env
+    # 映射端口
+    ports:
+      - 3314:3306
+    # 加入指定网络
+    # networks: 
+    #   - server03
+    # 添加环境变量，可以使用数组或字典。
+    environment:
+      MYSQL_ROOT_USERNAME: mysql_env_root
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    # 挂载一个目录或者一个已存在的数据卷容器
+    volumes:
+      - /opt/docker/data/mysql_01/data:/var/lib/mysql
+      - /opt/docker/data/mysql_01/log:/var/log
+      - /opt/docker/data/mysql_01/sock/:/var/run/mysqld
+      - /opt/docker/data/mysql_01/conf:/etc/mysql/
+      # - /opt/docker/data/db/mysql_01/mysql-files:/var/lib/mysql-files
+      - /etc/localtime:/etc/localtime
+    # 网络相关
+    build: .
+    networks:
+      container-network:
+        aliases:
+          - mysql_01
+        ipv4_address: 172.100.0.19
+    # 覆盖容器的默认限制
+    # 可以单一地将限制值设为一个整数
+    # 也可以将soft/hard 限制指定为映射
+    # ulimits:
+    #   nproc: 65535
+    #   nofile:
+    #     soft: 20000
+    #     hard: 40000
+
+networks:
+  container-network:
+    # container-network如果已存在则使用 external: ture
+    external: true
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.100.0.0/16
+    #     - gateway: 172.100.0.1
+    #     - ip-range: 172.100.0.0/16
